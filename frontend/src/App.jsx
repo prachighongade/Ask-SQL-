@@ -6,26 +6,26 @@ const API_BASE = "http://localhost:8000";
 function Navbar({ theme, onToggleTheme }) {
   return (
     <nav className="sticky top-0 z-10 border-b border-[var(--border)] bg-[var(--bg)]/90 backdrop-blur">
-      <div className="max-w-2xl mx-auto px-6 py-4 flex items-center justify-between">
+      <div className="max-w-2xl mx-auto px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-between">
         <div className="flex items-center gap-2">
           <span className="text-[var(--accent)] font-['JetBrains_Mono'] text-sm">{'>'}</span>
-          <span className="font-['Space_Grotesk'] font-bold text-lg tracking-tight">
+          <span className="font-['Space_Grotesk'] font-bold text-base sm:text-lg tracking-tight">
             Ask<span className="text-[var(--accent)]">SQL</span>
           </span>
         </div>
 
-        <div className="flex items-center gap-6">
-          <a href="#home" className="text-sm text-[var(--text-muted)] hover:text-[var(--text)] transition-colors">
+        <div className="flex items-center gap-3 sm:gap-6">
+          <a href="#home" className="hidden sm:inline text-sm text-[var(--text-muted)] hover:text-[var(--text)] transition-colors">
             Home
           </a>
-          <a href="#about" className="text-sm text-[var(--text-muted)] hover:text-[var(--text)] transition-colors">
+          <a href="#about" className="hidden sm:inline text-sm text-[var(--text-muted)] hover:text-[var(--text)] transition-colors">
             About
           </a>
           <button
             onClick={onToggleTheme}
             aria-label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
             title={theme === "dark" ? "Light mode" : "Dark mode"}
-            className="w-8 h-8 rounded-lg border border-[var(--border)] text-[var(--text)] hover:border-[var(--accent)] hover:text-[var(--accent)] transition-colors flex items-center justify-center"
+            className="w-8 h-8 rounded-lg border border-[var(--border)] text-[var(--text)] hover:border-[var(--accent)] hover:text-[var(--accent)] transition-colors flex items-center justify-center shrink-0"
           >
             {theme === "dark" ? (
               // Sun icon (click to go light)
@@ -55,9 +55,9 @@ function Navbar({ theme, onToggleTheme }) {
 
 function Step({ number, title, active, done, children }) {
   return (
-    <div className="relative pl-14">
+    <div className="relative pl-11 sm:pl-14">
       <div
-        className={`absolute left-0 top-0 w-9 h-9 rounded-full flex items-center justify-center font-['JetBrains_Mono'] text-xs border transition-colors ${
+        className={`absolute left-0 top-0 w-8 h-8 sm:w-9 sm:h-9 rounded-full flex items-center justify-center font-['JetBrains_Mono'] text-xs border transition-colors ${
           done
             ? "bg-[var(--accent-dim)] border-[var(--accent)] text-[var(--accent)]"
             : active
@@ -217,11 +217,11 @@ function App() {
     <div className="min-h-screen bg-[var(--bg)] text-[var(--text)]">
       <Navbar theme={theme} onToggleTheme={handleToggleTheme} />
 
-      <div id="home" className="max-w-2xl mx-auto px-6 py-12">
-        <header className="mb-14">
+      <div id="home" className="max-w-2xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
+        <header className="mb-10 sm:mb-14">
           <div className="flex items-center gap-2 mb-2">
             <span className="text-[var(--accent)] font-['JetBrains_Mono'] text-sm">{'>'}</span>
-            <h1 className="font-['Space_Grotesk'] font-bold text-3xl tracking-tight">
+            <h1 className="font-['Space_Grotesk'] font-bold text-2xl sm:text-3xl tracking-tight">
               Ask<span className="text-[var(--accent)]">SQL</span>
             </h1>
           </div>
@@ -230,8 +230,8 @@ function App() {
           </p>
         </header>
 
-        <div className="relative flex flex-col gap-10">
-          <div className="absolute left-[17px] top-9 bottom-9 w-px bg-[var(--border)]" />
+        <div className="relative flex flex-col gap-8 sm:gap-10">
+          <div className="absolute left-[15px] sm:left-[17px] top-9 bottom-9 w-px bg-[var(--border)]" />
 
           <Step number="1" title="Upload your data" active={!tableName} done={!!tableName}>
             <div
@@ -239,7 +239,7 @@ function App() {
               onDragLeave={() => setDragOver(false)}
               onDrop={handleDrop}
               onClick={() => fileInputRef.current?.click()}
-              className={`rounded-xl border border-dashed p-6 cursor-pointer transition-all ${
+              className={`rounded-xl border border-dashed p-4 sm:p-6 cursor-pointer transition-all ${
                 dragOver
                   ? "border-[var(--accent)] bg-[var(--accent-dim)]"
                   : "border-[var(--border)] bg-[var(--surface)] hover:border-[var(--border-hover)]"
@@ -256,8 +256,8 @@ function App() {
                 <div className="w-9 h-9 rounded-lg bg-[var(--accent-dim)] flex items-center justify-center text-[var(--accent)] font-['JetBrains_Mono'] text-xs shrink-0">
                   CSV
                 </div>
-                <div className="text-sm">
-                  <p className="text-[var(--text)]">
+                <div className="text-sm min-w-0">
+                  <p className="text-[var(--text)] break-words">
                     {uploading ? "Uploading..." : "Drop a CSV here, or click to browse"}
                   </p>
                   <p className="text-[var(--text-muted)] text-xs mt-0.5">Max file size applies</p>
@@ -289,11 +289,11 @@ function App() {
           <Step number="2" title="Ask a question" active={!!tableName && !sql} done={!!sql}>
             <form onSubmit={handleAsk} className="relative">
               <div
-                className={`flex items-center gap-2 rounded-xl border bg-[var(--surface)] px-4 py-3 transition-colors ${
+                className={`flex items-center gap-2 rounded-xl border bg-[var(--surface)] px-3 sm:px-4 py-2.5 sm:py-3 transition-colors ${
                   tableName ? "border-[var(--border)] focus-within:border-[var(--accent)]" : "border-[var(--border)] opacity-50"
                 }`}
               >
-                <span className="text-[var(--accent)] font-['JetBrains_Mono'] text-sm">{'>'}</span>
+                <span className="text-[var(--accent)] font-['JetBrains_Mono'] text-sm shrink-0">{'>'}</span>
                 <input
                   type="text"
                   value={question}
@@ -306,7 +306,7 @@ function App() {
                       ? "How many orders per region?"
                       : "Upload a CSV first"
                   }
-                  className="flex-1 bg-transparent outline-none text-sm font-['JetBrains_Mono'] placeholder:text-[var(--text-muted)]"
+                  className="flex-1 min-w-0 bg-transparent outline-none text-sm font-['JetBrains_Mono'] placeholder:text-[var(--text-muted)]"
                 />
                 {voiceSupported && (
                   <button
@@ -331,7 +331,7 @@ function App() {
                 <button
                   type="submit"
                   disabled={!tableName || asking || !question.trim()}
-                  className="text-xs font-['Space_Grotesk'] font-semibold px-3 py-1.5 rounded-lg bg-[var(--accent)] text-[#0A0A0A] disabled:bg-[var(--border)] disabled:text-[var(--text-muted)] transition-colors"
+                  className="shrink-0 text-xs font-['Space_Grotesk'] font-semibold px-2.5 sm:px-3 py-1.5 rounded-lg bg-[var(--accent)] text-[#0A0A0A] disabled:bg-[var(--border)] disabled:text-[var(--text-muted)] transition-colors"
                 >
                   {asking ? "Running" : "Run"}
                 </button>
@@ -373,7 +373,7 @@ function App() {
                       <thead>
                         <tr className="bg-[var(--surface-hover)]">
                           {columns.map((col) => (
-                            <th key={col} className="text-left px-4 py-2 text-[var(--text-muted)] font-medium border-b border-[var(--border)]">
+                            <th key={col} className="text-left px-4 py-2 text-[var(--text-muted)] font-medium border-b border-[var(--border)] whitespace-nowrap">
                               {col}
                             </th>
                           ))}
@@ -383,7 +383,7 @@ function App() {
                         {results.map((row, i) => (
                           <tr key={i} className="border-b border-[var(--border)] last:border-0 hover:bg-[var(--surface-hover)] transition-colors">
                             {columns.map((col) => (
-                              <td key={col} className="px-4 py-2 text-[var(--text)]">
+                              <td key={col} className="px-4 py-2 text-[var(--text)] whitespace-nowrap">
                                 {String(row[col])}
                               </td>
                             ))}
@@ -403,7 +403,7 @@ function App() {
         </div>
         
 
-        <section id="about" className="mt-24 pt-10 border-t border-[var(--border)]">
+        <section id="about" className="mt-16 sm:mt-24 pt-10 border-t border-[var(--border)]">
           <h2 className="font-['Space_Grotesk'] font-semibold text-xl mb-3">About</h2>
           <p className="text-[var(--text-muted)] text-sm leading-relaxed max-w-xl">
             AskSQL turns plain English questions into SQL queries and runs them
