@@ -15,11 +15,11 @@ function Navbar({ theme, onToggleTheme }) {
         </div>
 
         <div className="flex items-center gap-3 sm:gap-6">
-          <a href="#home" className="hidden sm:inline text-sm text-[var(--text-muted)] hover:text-[var(--text)] transition-colors">
-            Home
-          </a>
           <a href="#about" className="hidden sm:inline text-sm text-[var(--text-muted)] hover:text-[var(--text)] transition-colors">
             About
+          </a>
+          <a href="#home" className="hidden sm:inline text-sm text-[var(--text-muted)] hover:text-[var(--text)] transition-colors">
+            Home
           </a>
           <button
             onClick={onToggleTheme}
@@ -50,6 +50,105 @@ function Navbar({ theme, onToggleTheme }) {
         </div>
       </div>
     </nav>
+  );
+}
+
+const HERO_EXAMPLES = [
+  {
+    q: "How many orders per region?",
+    sql: "SELECT region, COUNT(*)\nFROM orders\nGROUP BY region;",
+  },
+  {
+    q: "Top 5 customers by spend",
+    sql: "SELECT customer, SUM(amount) AS total\nFROM sales\nGROUP BY customer\nORDER BY total DESC\nLIMIT 5;",
+  },
+  {
+    q: "Average delivery time by carrier",
+    sql: "SELECT carrier, AVG(delivery_days)\nFROM shipments\nGROUP BY carrier;",
+  },
+];
+
+function Hero() {
+  const [idx, setIdx] = useState(0);
+
+  useEffect(() => {
+    const t = setInterval(() => setIdx((i) => (i + 1) % HERO_EXAMPLES.length), 4000);
+    return () => clearInterval(t);
+  }, []);
+
+  const current = HERO_EXAMPLES[idx];
+
+  return (
+    <section id="about" className="relative overflow-hidden border-b border-[var(--border)]">
+      {/* faint grid backdrop */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 opacity-[0.05]"
+        style={{
+          backgroundImage:
+            "linear-gradient(var(--text) 1px, transparent 1px), linear-gradient(90deg, var(--text) 1px, transparent 1px)",
+          backgroundSize: "32px 32px",
+          maskImage: "radial-gradient(ellipse at top, black, transparent 75%)",
+        }}
+      />
+
+      <div className="max-w-2xl mx-auto px-4 sm:px-6 pt-14 sm:pt-20 pb-14 sm:pb-20 relative">
+        <div className="inline-flex items-center gap-2 mb-6 rounded-full border border-[var(--border)] bg-[var(--surface)] px-3 py-1 font-['JetBrains_Mono'] text-[11px] text-[var(--text-muted)]">
+          <span className="w-1.5 h-1.5 rounded-full bg-[var(--accent)] animate-pulse-dot" />
+          english in, sql out
+        </div>
+
+        <h1 className="font-['Space_Grotesk'] font-bold text-4xl sm:text-5xl tracking-tight leading-[1.05] mb-4">
+          Talk to your data.
+          <br />
+          <span className="text-[var(--accent)]">Get back SQL.</span>
+        </h1>
+
+        <p className="text-[var(--text-muted)] text-sm sm:text-base leading-relaxed max-w-md mb-9">
+          Upload a CSV, ask a question the way you'd ask a colleague, and
+          AskSQL writes, runs, and explains the query for you — no SQL
+          knowledge required.
+        </p>
+
+        {/* rotating live example */}
+        <div className="rounded-xl border border-[var(--border)] bg-[var(--surface)] overflow-hidden mb-9 max-w-xl shadow-[0_0_0_1px_rgba(255,255,255,0.02)]">
+          <div className="flex items-center gap-1.5 px-4 py-2.5 border-b border-[var(--border)] bg-[var(--surface-hover)]">
+            <span className="w-2 h-2 rounded-full bg-[var(--accent)]" />
+            <span className="w-2 h-2 rounded-full bg-[var(--amber)]" />
+            <span className="w-2 h-2 rounded-full bg-[var(--border-hover)]" />
+            <span className="text-[var(--text-muted)] text-xs font-['JetBrains_Mono'] ml-2">example.sql</span>
+          </div>
+          <div key={idx} className="animate-in p-4 font-['JetBrains_Mono'] text-xs sm:text-sm leading-relaxed min-h-[104px]">
+            <p className="text-[var(--text-muted)] mb-2">{'> '}{current.q}</p>
+            <pre className="text-[var(--accent)] whitespace-pre-wrap break-words">{current.sql}</pre>
+          </div>
+          <div className="flex items-center gap-1.5 px-4 pb-3">
+            {HERO_EXAMPLES.map((_, i) => (
+              <span
+                key={i}
+                className={`h-1 rounded-full transition-all ${
+                  i === idx ? "w-5 bg-[var(--accent)]" : "w-1.5 bg-[var(--border-hover)]"
+                }`}
+              />
+            ))}
+          </div>
+        </div>
+
+        <div className="flex flex-wrap items-center gap-4">
+          <a
+            href="#home"
+            className="inline-flex items-center gap-2 text-xs font-['Space_Grotesk'] font-semibold px-4 py-2.5 rounded-lg bg-[var(--accent)] text-[#0A0A0A] hover:bg-[var(--accent-hover)] transition-colors"
+          >
+            Try it now ↓
+          </a>
+          <div className="flex items-center gap-2 font-['JetBrains_Mono'] text-[11px] text-[var(--text-muted)]">
+            <span className="px-2 py-1 rounded border border-[var(--border)]">FastAPI</span>
+            <span className="px-2 py-1 rounded border border-[var(--border)]">DuckDB</span>
+            <span className="px-2 py-1 rounded border border-[var(--border)]">Llama 3.3 70B</span>
+          </div>
+        </div>
+      </div>
+    </section>
   );
 }
 
@@ -217,18 +316,15 @@ function App() {
     <div className="min-h-screen bg-[var(--bg)] text-[var(--text)]">
       <Navbar theme={theme} onToggleTheme={handleToggleTheme} />
 
-      <div id="home" className="max-w-2xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
-        <header className="mb-10 sm:mb-14">
-          <div className="flex items-center gap-2 mb-2">
-            <span className="text-[var(--accent)] font-['JetBrains_Mono'] text-sm">{'>'}</span>
-            <h1 className="font-['Space_Grotesk'] font-bold text-2xl sm:text-3xl tracking-tight">
-              Ask<span className="text-[var(--accent)]">SQL</span>
-            </h1>
-          </div>
-          <p className="text-[var(--text-muted)] text-sm">
-            English in. SQL out. Upload a CSV and ask.
-          </p>
-        </header>
+      <Hero />
+
+      <div id="home" className="max-w-2xl mx-auto px-4 sm:px-6 py-10 sm:py-14">
+        <div className="flex items-center gap-2 mb-8 sm:mb-10">
+          <span className="text-[var(--accent)] font-['JetBrains_Mono'] text-sm">{'>'}</span>
+          <h2 className="font-['Space_Grotesk'] font-bold text-lg sm:text-xl tracking-tight">
+            Run it yourself
+          </h2>
+        </div>
 
         <div className="relative flex flex-col gap-8 sm:gap-10">
           <div className="absolute left-[15px] sm:left-[17px] top-9 bottom-9 w-px bg-[var(--border)]" />
@@ -401,17 +497,6 @@ function App() {
             </Step>
           )}
         </div>
-        
-
-        <section id="about" className="mt-16 sm:mt-24 pt-10 border-t border-[var(--border)]">
-          <h2 className="font-['Space_Grotesk'] font-semibold text-xl mb-3">About</h2>
-          <p className="text-[var(--text-muted)] text-sm leading-relaxed max-w-xl">
-            AskSQL turns plain English questions into SQL queries and runs them
-            instantly against your uploaded data. Built with FastAPI, DuckDB,
-            and Groq's Llama 3.3 70B for natural language understanding — no
-            SQL knowledge required to explore your own datasets.
-          </p>
-        </section>
       </div>
     </div>
   );
