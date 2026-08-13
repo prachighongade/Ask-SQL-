@@ -9,6 +9,7 @@ import re
 import shutil
 
 from fastapi import FastAPI, UploadFile, File, HTTPException
+app = FastAPI()
 from pydantic import BaseModel
 from .nl2sql import generate_sql, explain_sql
 from .templates import get_all_templates, get_templates_by_role

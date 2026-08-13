@@ -174,6 +174,37 @@ function Step({ number, title, active, done, children }) {
   );
 }
 
+function Footer() {
+  return (
+    <footer className="border-t border-[var(--border)] mt-10">
+      <div className="max-w-2xl mx-auto px-4 sm:px-6 py-8 text-center">
+        <p className="text-sm text-[var(--text)]">
+          Built by <span className="font-bold">Prachi Ghongade</span>
+        </p>
+        <div className="flex items-center justify-center gap-4 mt-3 font-['JetBrains_Mono'] text-xs">
+          <a
+            href="https://github.com/PrachiGhongade26"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-[var(--text-muted)] hover:text-[var(--accent)] transition-colors"
+          >
+            GitHub
+          </a>
+          <span className="text-[var(--border)]">•</span>
+          <a
+            href="https://www.linkedin.com/in/prachi-ghongade-a82167296/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-[var(--text-muted)] hover:text-[var(--accent)] transition-colors"
+          >
+            LinkedIn
+          </a>
+        </div>
+      </div>
+    </footer>
+  );
+}
+
 function App() {
   const [theme, setTheme] = useState("dark");
 
@@ -498,6 +529,8 @@ function App() {
           )}
         </div>
       </div>
+
+      <Footer />
     </div>
   );
 }
