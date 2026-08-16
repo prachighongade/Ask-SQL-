@@ -68,6 +68,65 @@ const HERO_EXAMPLES = [
   },
 ];
 
+// Types out "Talk to your data." then "Get back SQL." letter by letter,
+// terminal-style, with a blinking cursor. Runs once on mount.
+function TypewriterHeading() {
+  const line1 = "Talk to your data.";
+  const line2 = "Get back SQL.";
+
+  const [text1, setText1] = useState("");
+  const [text2, setText2] = useState("");
+  const [phase, setPhase] = useState("line1"); // "line1" -> "line2" -> "done"
+
+  useEffect(() => {
+    let i = 0;
+    const speed = 55; // ms per character
+    const interval = setInterval(() => {
+      i += 1;
+      setText1(line1.slice(0, i));
+      if (i >= line1.length) {
+        clearInterval(interval);
+        setTimeout(() => setPhase("line2"), 250);
+      }
+    }, speed);
+    return () => clearInterval(interval);
+  }, []);
+
+  useEffect(() => {
+    if (phase !== "line2") return;
+    let i = 0;
+    const speed = 55;
+    const interval = setInterval(() => {
+      i += 1;
+      setText2(line2.slice(0, i));
+      if (i >= line2.length) {
+        clearInterval(interval);
+        setPhase("done");
+      }
+    }, speed);
+    return () => clearInterval(interval);
+  }, [phase]);
+
+  const Cursor = ({ color }) => (
+    <span
+      className="inline-block w-[3px] sm:w-[4px] h-[0.85em] ml-1 align-middle animate-pulse-dot"
+      style={{ backgroundColor: color }}
+    />
+  );
+
+  return (
+    <h1 className="font-['Space_Grotesk'] font-bold text-4xl sm:text-5xl tracking-tight leading-[1.05] mb-4 min-h-[92px] sm:min-h-[112px]">
+      {text1}
+      {phase === "line1" && <Cursor color="var(--text)" />}
+      <br />
+      <span className="text-[var(--accent)]">
+        {text2}
+        {phase !== "line1" && <Cursor color="var(--accent)" />}
+      </span>
+    </h1>
+  );
+}
+
 function Hero() {
   const [idx, setIdx] = useState(0);
 
@@ -98,16 +157,10 @@ function Hero() {
           english in, sql out
         </div>
 
-        <h1 className="font-['Space_Grotesk'] font-bold text-4xl sm:text-5xl tracking-tight leading-[1.05] mb-4">
-          Talk to your data.
-          <br />
-          <span className="text-[var(--accent)]">Get back SQL.</span>
-        </h1>
+        <TypewriterHeading />
 
         <p className="text-[var(--text-muted)] text-sm sm:text-base leading-relaxed max-w-md mb-9">
-          Upload a CSV, ask a question the way you'd ask a colleague, and
-          AskSQL writes, runs, and explains the query for you — no SQL
-          knowledge required.
+          Ask your data anything.
         </p>
 
         {/* rotating live example */}
@@ -183,7 +236,7 @@ function Footer() {
         </p>
         <div className="flex items-center justify-center gap-4 mt-3 font-['JetBrains_Mono'] text-xs">
           <a
-            href="https://github.com/PrachiGhongade26"
+            href="https://github.com/prachighongade"
             target="_blank"
             rel="noopener noreferrer"
             className="text-[var(--text-muted)] hover:text-[var(--accent)] transition-colors"
@@ -426,13 +479,7 @@ function App() {
                   value={question}
                   onChange={(e) => setQuestion(e.target.value)}
                   disabled={!tableName || asking}
-                  placeholder={
-                    isListening
-                      ? "Listening..."
-                      : tableName
-                      ? "How many orders per region?"
-                      : "Upload a CSV first"
-                  }
+                  placeholder={isListening ? "Listening..." : "Ask your data anything"}
                   className="flex-1 min-w-0 bg-transparent outline-none text-sm font-['JetBrains_Mono'] placeholder:text-[var(--text-muted)]"
                 />
                 {voiceSupported && (
