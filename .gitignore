@@ -6,4 +6,7 @@ node_modules/
 dist/
 .DS_Store
 
-backend/data/app.duckdb
+backend/data/app.duckdb.vscode/
+.idea/
+Thumbs.db
+*.duckdb
