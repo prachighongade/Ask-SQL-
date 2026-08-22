@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import axios from "axios";
+import chimeSound from './assets/chime.wav';
 
 const API_BASE = "http://localhost:8000";
 
@@ -273,6 +274,25 @@ function App() {
     setTheme((prev) => (prev === "dark" ? "light" : "dark"));
   };
 
+  // --- Welcome chime ---
+  const chimeRef = useRef(null);
+
+  useEffect(() => {
+    // Try autoplay immediately (works in some browsers/contexts)
+    chimeRef.current?.play().catch(() => {
+      // Blocked by browser — fallback below handles it
+    });
+
+    // Fallback: play on first user interaction anywhere on the page
+    const playOnce = () => {
+      chimeRef.current?.play();
+      document.removeEventListener("click", playOnce);
+    };
+    document.addEventListener("click", playOnce);
+    return () => document.removeEventListener("click", playOnce);
+  }, []);
+  // --- End welcome chime ---
+
   const [tableName, setTableName] = useState(null);
   const [schema, setSchema] = useState(null);
   const [rowCount, setRowCount] = useState(null);
@@ -398,6 +418,8 @@ function App() {
 
   return (
     <div className="min-h-screen bg-[var(--bg)] text-[var(--text)]">
+      <audio ref={chimeRef} src={chimeSound} />
+
       <Navbar theme={theme} onToggleTheme={handleToggleTheme} />
 
       <Hero />
