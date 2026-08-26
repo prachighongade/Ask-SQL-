@@ -2,7 +2,7 @@
 # AskSQL 
 
 Backend live at: https://ask-sql-453o.onrender.com/docs 
-=======
+
 AskSQL lets you query databases using plain English instead of writing SQL by hand. Ask a question, and it converts it into an SQL query, runs it, and shows you the results. Built to make data exploration faster for anyone, regardless of SQL experience.
 
 ## Features
