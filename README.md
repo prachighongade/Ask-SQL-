@@ -24,8 +24,3 @@ cd backend
 pip install -r requirements.txt
 uvicorn main:app --reload
 
-# Frontend
-cd frontend
-npm install
-npm run dev
->>>>>>> 859d94dae42431f75f413c0b1f315d3c2d93f9af
