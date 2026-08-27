@@ -1,11 +1,22 @@
+import os
+
 from fastapi import FastAPI, HTTPException
 app = FastAPI()
 
 from fastapi.middleware.cors import CORSMiddleware
 
+# Local dev origin, plus any extra origins from an env var (comma-separated),
+# e.g. ALLOWED_ORIGINS=https://ask-sql-xyz.vercel.app,https://asksql.yourdomain.com
+extra_origins = os.getenv("ALLOWED_ORIGINS", "")
+allow_origins = ["http://localhost:5173"] + [
+    origin.strip() for origin in extra_origins.split(",") if origin.strip()
+]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173"],
+    allow_origins=allow_origins,
+    # Also allow any Vercel preview/production deployment URL for this project
+    allow_origin_regex=r"https://.*\.vercel\.app",
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
