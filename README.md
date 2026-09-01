@@ -42,7 +42,7 @@ Open http://localhost:5173. By default the app talks to http://localhost:8000.
 
 Optional local backend env (never commit real values):
 
-# backend/.env
+ backend/.env
 GROQ_API_KEY=your_key_here
 Do not share / do not commit
 
